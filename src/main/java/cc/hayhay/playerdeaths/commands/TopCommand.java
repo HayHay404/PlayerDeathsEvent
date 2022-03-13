@@ -1,7 +1,12 @@
-package cc.hayhay.playerdeaths;
+package cc.hayhay.playerdeaths.commands;
 
+import cc.hayhay.playerdeaths.Globals;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,11 +19,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("deprecation")
-public class TopCmd implements CommandExecutor {
+public class TopCommand implements CommandExecutor {
     public static Inventory inv;
 
-    public TopCmd() {
+    public TopCommand() {
         inv = Bukkit.createInventory(null, 9);
     }
 
@@ -35,14 +39,17 @@ public class TopCmd implements CommandExecutor {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     protected ItemStack createGuiItems(final String name) {
 
         final ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
         final SkullMeta meta = (SkullMeta) item.getItemMeta();
         String playerName = name.substring(name.indexOf("—") + 2);
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+
         item.setAmount(1);
-        meta.setOwner(playerName);
-        meta.setDisplayName(name);
+        meta.setOwningPlayer(offlinePlayer);
+        meta.displayName(Component.text(name, NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
 
         item.setItemMeta(meta);
 

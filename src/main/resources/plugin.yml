@@ -3,9 +3,10 @@ version: '${project.version}'
 main: cc.hayhay.playerdeaths.PlayerDeaths
 api-version: 1.18
 prefix: PD
-authors: [ HayHay ]
+authors: [ HayHay, Pixwl ]
 description: Event for Luminous SMP
 website: https://hayhay.cc
+
 commands:
   pdStart:
     usage: /pdStart <length in minutes>
@@ -19,8 +20,13 @@ commands:
     usage: /pdStop
     description: Stops all currently running events.
     permission: playerDeaths.start
+
 permissions:
   playerDeaths.start:
     description: Starts & Stops the player death event countdown.
   playerDeaths.top:
     description: Shows the top 9 in points for the event.
+    default: true
+  playerDeaths.bypassMove:
+    description: Bypasses freezing players when they move.
+    default: op
