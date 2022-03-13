@@ -27,3 +27,6 @@ permissions:
   playerDeaths.top:
     description: Shows the top 9 in points for the event.
     default: true
+  playerDeaths.bypassMove:
+    description: Bypasses freezing players when they move.
+    default: op

@@ -11,7 +11,7 @@ public class PlayerFreezeListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (Globals.isEventStarting) {
+        if (Globals.isEventStarting && !event.getPlayer().hasPermission("playerDeaths.bypassMove")) {
             event.setCancelled(true);
             event.getPlayer().sendActionBar(Component.text("Event is starting, you can't move!", NamedTextColor.RED));
         }
