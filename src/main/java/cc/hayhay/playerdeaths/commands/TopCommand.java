@@ -1,5 +1,6 @@
-package cc.hayhay.playerdeaths;
+package cc.hayhay.playerdeaths.commands;
 
+import cc.hayhay.playerdeaths.Globals;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -15,10 +16,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("deprecation")
-public class TopCmd implements CommandExecutor {
+public class TopCommand implements CommandExecutor {
     public static Inventory inv;
 
-    public TopCmd() {
+    public TopCommand() {
         inv = Bukkit.createInventory(null, 9);
     }
 

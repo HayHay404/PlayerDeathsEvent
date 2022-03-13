@@ -1,5 +1,7 @@
-package cc.hayhay.playerdeaths;
+package cc.hayhay.playerdeaths.commands;
 
+import cc.hayhay.playerdeaths.Globals;
+import cc.hayhay.playerdeaths.PlayerDeaths;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

@@ -1,5 +1,7 @@
-package cc.hayhay.playerdeaths;
+package cc.hayhay.playerdeaths.commands;
 
+import cc.hayhay.playerdeaths.Globals;
+import cc.hayhay.playerdeaths.PlayerDeaths;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -12,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("deprecation")
-public class Timer implements CommandExecutor {
+public class TimerCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,

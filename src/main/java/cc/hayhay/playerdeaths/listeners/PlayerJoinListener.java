@@ -1,5 +1,6 @@
-package cc.hayhay.playerdeaths;
+package cc.hayhay.playerdeaths.listeners;
 
+import cc.hayhay.playerdeaths.Globals;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

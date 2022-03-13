@@ -1,5 +1,6 @@
-package cc.hayhay.playerdeaths;
+package cc.hayhay.playerdeaths.listeners;
 
+import cc.hayhay.playerdeaths.Globals;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,7 +10,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class PdListener implements Listener {
+public class PlayerDeathListener implements Listener {
     int count = 0;
 
     @EventHandler
