@@ -3,9 +3,10 @@ version: '${project.version}'
 main: cc.hayhay.playerdeaths.PlayerDeaths
 api-version: 1.18
 prefix: PD
-authors: [ HayHay ]
+authors: [ HayHay, Pixwl ]
 description: Event for Luminous SMP
 website: https://hayhay.cc
+
 commands:
   pdStart:
     usage: /pdStart <length in minutes>
