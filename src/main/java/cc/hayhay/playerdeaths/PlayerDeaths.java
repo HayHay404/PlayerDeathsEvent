@@ -22,6 +22,7 @@ public final class PlayerDeaths extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerFreezeListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+
         this.getCommand("pdStart").setExecutor(new TimerCommand());
         this.getCommand("pdTop").setExecutor(new TopCommand());
         this.getCommand("pdStop").setExecutor(new CancelEventCommand());

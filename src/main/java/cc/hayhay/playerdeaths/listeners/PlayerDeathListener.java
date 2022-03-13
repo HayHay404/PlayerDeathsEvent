@@ -1,6 +1,9 @@
 package cc.hayhay.playerdeaths.listeners;
 
 import cc.hayhay.playerdeaths.Globals;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,8 +21,7 @@ public class PlayerDeathListener implements Listener {
 
         if (!Globals.isEventRunning) return;
 
-        //noinspection deprecation
-        String deathMsg = event.getDeathMessage();
+        Component deathMsg = event.deathMessage();
         Player p = event.getPlayer();
         Double val = Globals.playerEventList.get(p);
         double multiplier = 5.0;
@@ -32,15 +34,15 @@ public class PlayerDeathListener implements Listener {
             switch (count) {
                 case 1:
                     Globals.playerEventList.put(p, val + (multiplier * .5));
-                    p.sendMessage("§a§lGained " + (multiplier * .5) + " points!");
+                    p.sendMessage(Component.text("Gained " + (multiplier * .5) + " points!", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, true));
                     break;
                 case 2:
                     Globals.playerEventList.put(p, val + (multiplier * .25));
-                    p.sendMessage("§a§lGained " + (multiplier * .25) + " points!");
+                    p.sendMessage(Component.text("Gained " + (multiplier * .25) + " points!", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, true));
                     break;
                 default:
                     Globals.playerEventList.put(p, val + (multiplier * .1));
-                    p.sendMessage("§a§lGained " + (multiplier * .1) + " points!");
+                    p.sendMessage(Component.text("Gained " + (multiplier * .1) + " points!", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, true));
                     break;
             }
         }
@@ -48,16 +50,16 @@ public class PlayerDeathListener implements Listener {
         p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10, 29);
     }
 
-    private boolean isUniqueDeath(String deathMsg, Player p) {
+    private boolean isUniqueDeath(Component deathMsg, Player p) {
         AtomicBoolean isUnique = new AtomicBoolean(true);
-        ArrayList<String> arr = new ArrayList<>();
+        ArrayList<Component> arr = new ArrayList<>();
         if (Globals.playerDeaths.get(p) != null) {
             arr = Globals.playerDeaths.get(p);
         }
 
         count = 0;
 
-        for (String s : arr) {
+        for (Component s : arr) {
             if (s.equals(deathMsg)) {
                 count += 1;
                 isUnique.set(false);

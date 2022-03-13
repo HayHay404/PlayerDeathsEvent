@@ -2,6 +2,11 @@ package cc.hayhay.playerdeaths.commands;
 
 import cc.hayhay.playerdeaths.Globals;
 import cc.hayhay.playerdeaths.PlayerDeaths;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.title.Title;
+import net.kyori.adventure.title.TitlePart;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -11,9 +16,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-@SuppressWarnings("deprecation")
 public class TimerCommand implements CommandExecutor {
 
     @Override
@@ -37,6 +42,38 @@ public class TimerCommand implements CommandExecutor {
         }
     }
 
+    /**
+     * Overload methods of {@link #sendTitle(Player, Component, Component)}; without the subtitle
+     * @param player The player to send the title to
+     * @param title The title to send
+     */
+    private void sendTitle(Player player, Component title) {
+        sendTitle(player, title, Component.empty());
+    }
+
+    /**
+     * Sends a title to the player using {@link Player#sendTitlePart(TitlePart, Object)}
+     * @param player The player to send the title to
+     * @param title The title to send
+     * @param subtitle The subtitle to send
+     */
+    private void sendTitle(Player player, Component title, Component subtitle) {
+        player.sendTitlePart(
+                TitlePart.TITLE,
+                title
+        );
+
+        player.sendTitlePart(
+                TitlePart.SUBTITLE,
+                subtitle
+        );
+
+        player.sendTitlePart(
+                TitlePart.TIMES,
+                Title.Times.of(Duration.ZERO, Duration.ofSeconds(1), Duration.ZERO)
+        );
+    }
+
     private void startTimer(int length) {
         int tickLength = (length * 20 * 60);
         int halfTimeTickLength = tickLength / 2;
@@ -48,13 +85,13 @@ public class TimerCommand implements CommandExecutor {
 
                     Globals.isEventStarting = true;
 
-                    p.sendTitle("§2§l3!", "");
+                    sendTitle(p, Component.text("3!", NamedTextColor.DARK_GREEN).decoration(TextDecoration.BOLD, true));
                     threadSleep();
-                    p.sendTitle("§e§l2!", "");
+                    sendTitle(p, Component.text("2!", NamedTextColor.YELLOW).decoration(TextDecoration.BOLD, true));
                     threadSleep();
-                    p.sendTitle("§4§l1!", "");
+                    sendTitle(p, Component.text("1!", NamedTextColor.DARK_RED).decoration(TextDecoration.BOLD, true));
                     threadSleep();
-                    p.sendTitle("§lGO!", "");
+                    sendTitle(p, Component.text("GO!", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, true));
 
                     Globals.isEventStarting = false;
 
@@ -66,15 +103,29 @@ public class TimerCommand implements CommandExecutor {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Bukkit.getOnlinePlayers().forEach(p -> p.sendTitle("§lHalf time!",
-                        "You have " + Globals.playerEventList.get(p) + " points!"));
+                Bukkit.getOnlinePlayers().forEach(player ->
+                    sendTitle(
+                            player,
+                            Component.text("Half Time!", NamedTextColor.YELLOW).decoration(TextDecoration.BOLD, true),
+                            Component.text("You have ", NamedTextColor.WHITE)
+                                    .append(
+                                            Component.text(Globals.playerEventList.get(player), NamedTextColor.GOLD)
+                                    )
+                                    .append(
+                                            Component.text(" points!", NamedTextColor.WHITE)
+                                    )
+                    ));
             }
         }.runTaskLaterAsynchronously(PlayerDeaths.getInstance(), halfTimeTickLength + 60);
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(PlayerDeaths.getInstance(), () -> {
             Globals.isEventRunning = false;
             Bukkit.getOnlinePlayers().forEach(p -> {
-                p.sendTitle("§6Event now over!", "§aTeleporting to spawn");
+                sendTitle(
+                        p,
+                        Component.text("Time's Up!", NamedTextColor.YELLOW).decoration(TextDecoration.BOLD, true),
+                        Component.text("Teleporting you to spawn...", NamedTextColor.GREEN)
+                );
                 p.sendMessage("§6§lYou got " + Globals.playerEventList.get(p) + " points!");
                 p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_DEATH, 10, 29);
                 p.teleport(p.getWorld().getSpawnLocation());
