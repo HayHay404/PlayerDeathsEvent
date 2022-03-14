@@ -35,6 +35,7 @@ public class TopCommand implements CommandExecutor {
             ArrayList<String> topPlayers = top();
             topPlayers.forEach(s -> inv.addItem(createGuiItems(s)));
             ((Player) sender).openInventory(inv);
+            return true;
         }
         return false;
     }

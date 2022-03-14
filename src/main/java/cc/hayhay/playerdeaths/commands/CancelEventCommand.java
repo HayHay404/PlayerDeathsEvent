@@ -18,15 +18,20 @@ public class CancelEventCommand implements CommandExecutor {
                              @NotNull String label, @NotNull String[] args) {
         if (sender.hasPermission("playerDeaths.start")
                 || sender.isOp()
-                || sender instanceof ConsoleCommandSender
-                && Globals.isEventRunning
-                && args.length == 0) {
+                || sender instanceof ConsoleCommandSender) {
+
+            if (!Globals.isEventRunning) {
+                sender.sendMessage(Component.text("No event running", NamedTextColor.RED));
+                return true;
+            }
+
             Globals.isEventRunning = false;
-            System.out.println("Cancelled all tasks");
             Bukkit.getScheduler().cancelTasks(PlayerDeaths.getInstance());
 
             sender.sendMessage(Component.text("Event is now cancelled.", NamedTextColor.GREEN));
+            return true;
         }
+
         return false;
     }
 }
