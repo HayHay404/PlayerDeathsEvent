@@ -8,6 +8,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.TitlePart;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -103,32 +104,43 @@ public class TimerCommand implements CommandExecutor {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Bukkit.getOnlinePlayers().forEach(player ->
-                    sendTitle(
-                            player,
-                            Component.text("Half Time!", NamedTextColor.YELLOW).decoration(TextDecoration.BOLD, true),
-                            Component.text("You have ", NamedTextColor.WHITE)
-                                    .append(
-                                            Component.text(Globals.playerEventList.get(player), NamedTextColor.GOLD)
-                                    )
-                                    .append(
-                                            Component.text(" points!", NamedTextColor.WHITE)
-                                    )
-                    ));
+                Bukkit.getOnlinePlayers().forEach(p -> {
+                    if (Globals.playerEventList.containsKey(p)) {
+                        sendTitle(
+                                p,
+                                Component.text("Half Time!", NamedTextColor.YELLOW).decoration(TextDecoration.BOLD, true),
+                                Component.text("You have ", NamedTextColor.WHITE)
+                                        .append(
+                                                Component.text(Globals.playerEventList.get(p), NamedTextColor.GOLD)
+                                        )
+                                        .append(
+                                                Component.text(" points!", NamedTextColor.WHITE)
+                                        )
+                        );
+                    } else {
+                        sendTitle(
+                                p,
+                                Component.text("Half Time!", NamedTextColor.YELLOW).decoration(TextDecoration.BOLD, true));
+                    }
+
+                });
             }
         }.runTaskLaterAsynchronously(PlayerDeaths.getInstance(), halfTimeTickLength + 60);
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(PlayerDeaths.getInstance(), () -> {
             Globals.isEventRunning = false;
             Bukkit.getOnlinePlayers().forEach(p -> {
+                if (Globals.playerEventList.containsKey(p)) {
+                    p.sendMessage("§6§lYou got " + Globals.playerEventList.get(p) + " points!");
+                }
                 sendTitle(
                         p,
                         Component.text("Time's Up!", NamedTextColor.YELLOW).decoration(TextDecoration.BOLD, true),
                         Component.text("Teleporting you to spawn...", NamedTextColor.GREEN)
                 );
-                p.sendMessage("§6§lYou got " + Globals.playerEventList.get(p) + " points!");
                 p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_DEATH, 10, 29);
                 p.teleport(p.getWorld().getSpawnLocation());
+                if (p.getGameMode() == GameMode.SPECTATOR) p.setGameMode(GameMode.SURVIVAL);
             });
         }, tickLength + 60);
     }
