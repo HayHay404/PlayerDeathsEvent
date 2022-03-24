@@ -5,7 +5,7 @@ api-version: 1.18
 prefix: PD
 authors: [ HayHay, Pixwl ]
 description: Event for Luminous SMP
-website: https://hayhay.cc
+website: https://hayhay.link
 
 commands:
   pdStart:
